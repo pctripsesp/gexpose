@@ -3,8 +3,7 @@ FROM golang:alpine
 WORKDIR /app
 COPY . /app
 ENV GO111MODULE=on
-ENV GOPROXY=https://goproxy.cn
-RUN go build -o ./bin/opensocks ./main.go
+RUN go build -o ./bin/gexpose ./main.go
 
-ENTRYPOINT ["./bin/opensocks"]
+ENTRYPOINT ["./bin/gexpose"]
 
