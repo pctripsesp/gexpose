@@ -17,7 +17,7 @@ func Copy(src, dst net.Conn) {
 			break
 		}
 		b := buf[:n]
-		cipher.XOR(b)
+		b = cipher.XOR(b)
 		_, err = dst.Write(b)
 		if err != nil {
 			break
