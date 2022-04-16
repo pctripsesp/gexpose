@@ -25,7 +25,7 @@ func Start(config config.Config) {
 
 func read(conn net.Conn, config config.Config) {
 	defer conn.Close()
-	packet := make([]byte, 16*1024)
+	packet := make([]byte, 1024)
 	for {
 		conn.SetReadDeadline(time.Now().Add(time.Duration(config.Timeout) * time.Second))
 		n, err := conn.Read(packet)
@@ -46,7 +46,7 @@ func read(conn net.Conn, config config.Config) {
 			conn.Close()
 			break
 		default:
-			log.Printf("received unsupported msg from server")
+			log.Printf("received an unsupported msg from server")
 		}
 	}
 }

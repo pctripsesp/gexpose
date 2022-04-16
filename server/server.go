@@ -16,7 +16,7 @@ import (
 var _clientConn net.Conn
 var _connPool = make(map[string]*ConnMapping)
 var _lock = sync.Mutex{}
-var _notifyNewIncomingProxyConn = make(chan int)
+var _notifyIncomingProxyConn = make(chan int)
 
 type ConnMapping struct {
 	proxyConn  *net.Conn
@@ -51,7 +51,7 @@ func listenServerAddr(config config.Config) {
 			continue
 		}
 		_clientConn = conn
-		log.Printf("a new incoming clinet connection from %v", _clientConn.RemoteAddr().String())
+		log.Printf("an incoming client connection from %v", _clientConn.RemoteAddr().String())
 		go read(_clientConn, config)
 		go ping(_clientConn, config)
 	}
@@ -77,10 +77,9 @@ func read(conn net.Conn, config config.Config) {
 			conn.Close()
 			break
 		default:
-			log.Printf("received unsupported msg from client")
+			log.Printf("received an unsupported msg from client")
 		}
 	}
-	cleanClient()
 }
 
 func ping(conn net.Conn, config config.Config) {
@@ -157,13 +156,13 @@ func mappingProxyConn(conn *net.Conn) {
 		(*conn).Close()
 	}
 	_lock.Unlock()
-	_notifyNewIncomingProxyConn <- 0
+	_notifyIncomingProxyConn <- 0
 }
 
 func forwardJob() {
 	for {
 		select {
-		case <-_notifyNewIncomingProxyConn:
+		case <-_notifyIncomingProxyConn:
 			_lock.Lock()
 			for key, mapping := range _connPool {
 				if mapping.proxyConn != nil && mapping.exposeConn != nil {
@@ -195,9 +194,10 @@ func cleanJob() {
 }
 
 func cleanClient() {
+	log.Println("client disconnected")
 	_clientConn = nil
 	for k := range _connPool {
 		delete(_connPool, k)
 	}
-	log.Println("client disconnected")
+	log.Println("client all connections")
 }
