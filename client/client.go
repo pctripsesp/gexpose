@@ -13,7 +13,7 @@ import (
 
 // Start client
 func Start(config config.Config) {
-	log.Printf("client started \r\nlocal address is %v \r\n server address is %v", config.LocalAddr, config.ServerAddr)
+	log.Printf("client started \r\nlocal address is %v \r\nserver address is %v \r\nproxy address is %v", config.LocalAddr, config.ServerAddr, config.ProxyAddr)
 	for {
 		conn, err := net.DialTimeout("tcp", config.ServerAddr, time.Duration(config.Timeout)*time.Second)
 		if err != nil {
