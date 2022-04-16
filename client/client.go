@@ -74,7 +74,7 @@ func proxy(config config.Config) {
 	}
 	localConn, localErr := net.DialTimeout("tcp", config.LocalAddr, time.Duration(config.Timeout)*time.Second)
 	if localErr != nil {
-		log.Printf("failed to dial local address %v", proxyErr)
+		log.Printf("failed to dial local address %v", localErr)
 		proxyConn.Close()
 		return
 	}
