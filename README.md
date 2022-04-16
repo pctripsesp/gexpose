@@ -18,7 +18,7 @@ Usage of ./gexpose:
   -l string
         local address (default ":9000")
   -p string
-        expose address (default ":8701")
+        proxy address (default ":8701")
   -s string
         server address (default ":8702")
   -e string
