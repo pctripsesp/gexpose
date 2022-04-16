@@ -199,5 +199,5 @@ func cleanClient() {
 	for k := range _connPool {
 		delete(_connPool, k)
 	}
-	log.Println("client all connections")
+	log.Println("clean all connections")
 }
