@@ -10,7 +10,7 @@ import (
 func Copy(src, dst net.Conn) {
 	defer dst.Close()
 	defer src.Close()
-	buf := make([]byte, 16*1024)
+	buf := make([]byte, 64*1024)
 	for {
 		n, err := src.Read(buf)
 		if err != nil || err == io.EOF {
