@@ -17,10 +17,10 @@ Usage of ./gexpose:
         encryption key (default "Xn2r4u7x!A%D*G8")
   -l string
         local address (default ":9000")
-  -p string
-        proxy address (default ":8701")
   -s string
-        server address (default ":8702")
+        server address (default ":8701")
+  -p string
+        proxy address (default ":8702")
   -e string
         expose address (default ":8703")
   -t int
@@ -38,7 +38,7 @@ sh scripts/build.sh
 
 ### Run client
 ```
-docker run  -d --privileged --restart=always --net=host --name gexpose-client netbyte/gexpose -s server-addr:8702 -p server-addr:8701 -l 127.0.0.1:8080
+docker run  -d --privileged --restart=always --net=host --name gexpose-client netbyte/gexpose -s server-addr:8701 -p server-addr:8702 -l 127.0.0.1:8080
 ```
 
 ### Run server

@@ -11,8 +11,8 @@ import (
 func main() {
 	config := config.Config{}
 	flag.StringVar(&config.LocalAddr, "l", ":9000", "local address")
-	flag.StringVar(&config.ProxyAddr, "p", ":8701", "proxy address")
-	flag.StringVar(&config.ServerAddr, "s", ":8702", "server address")
+	flag.StringVar(&config.ServerAddr, "s", ":8701", "server address")
+	flag.StringVar(&config.ProxyAddr, "p", ":8702", "proxy address")
 	flag.StringVar(&config.ExposeAddr, "e", ":8703", "expose address")
 	flag.StringVar(&config.Key, "k", "Xn2r4u7x!A%D*G8", "encryption key")
 	flag.BoolVar(&config.ServerMode, "server", false, "server mode")
