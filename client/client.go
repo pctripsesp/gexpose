@@ -15,11 +15,14 @@ import (
 func Start(config config.Config) {
 	log.Printf("client started \r\nlocal address is %v \r\n server address is %v", config.LocalAddr, config.ServerAddr)
 	for {
-		if conn, err := net.DialTimeout("tcp", config.ServerAddr, time.Duration(config.Timeout)*time.Second); conn != nil && err == nil {
-			log.Printf("server connected")
-			go read(conn, config)
-			ping(conn, config)
+		conn, err := net.DialTimeout("tcp", config.ServerAddr, time.Duration(config.Timeout)*time.Second)
+		if err != nil {
+			time.Sleep(3 * time.Second)
+			continue
 		}
+		log.Printf("server connected")
+		go read(conn, config)
+		ping(conn, config)
 	}
 }
 
