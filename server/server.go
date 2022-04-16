@@ -145,7 +145,7 @@ func mappingProxyConn(conn *net.Conn) {
 	_lock.Lock()
 	mapped := false
 	for _, mapping := range _connPool {
-		if mapping.proxyConn == nil && mapping.exposeConn != nil {
+		if mapping.mapped == false && mapping.exposeConn != nil {
 			mapping.proxyConn = conn
 			mapping.mapped = true
 			mapped = true
@@ -165,7 +165,7 @@ func forwardJob() {
 		case <-_notifyIncomingProxyConn:
 			_lock.Lock()
 			for key, mapping := range _connPool {
-				if mapping.proxyConn != nil && mapping.exposeConn != nil {
+				if mapping.mapped && mapping.proxyConn != nil && mapping.exposeConn != nil {
 					go netutil.Copy(*mapping.exposeConn, *mapping.proxyConn)
 					go netutil.Copy(*mapping.proxyConn, *mapping.exposeConn)
 					delete(_connPool, key)
@@ -180,7 +180,7 @@ func cleanJob() {
 	for {
 		_lock.Lock()
 		for key, mapping := range _connPool {
-			if mapping.proxyConn == nil && mapping.exposeConn != nil {
+			if mapping.mapped == false && mapping.exposeConn != nil {
 				if time.Now().Unix()-mapping.addTime > 10 {
 					log.Printf("clean the expired conn %v", (*mapping.exposeConn).RemoteAddr().String())
 					(*mapping.exposeConn).Close()
